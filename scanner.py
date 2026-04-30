@@ -1,0 +1,1 @@
+print("Hello Group, the scanner has started!")
