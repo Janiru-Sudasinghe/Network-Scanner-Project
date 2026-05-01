@@ -44,7 +44,7 @@ This project demonstrates mastery of **Socket Programming**, **Concurrency**, an
 | COHNDNE251F-043    | Multi-threading Architecture & Performance Optimisation |
 | COHNDNE251F-045    | CLI Interface, Argument Parsing & Documentation |
 
-> **Repository:** [Network-Scanner-Project](https://github.com/) *(replace with actual link)*
+> **Repository:** [Network-Scanner-Project](https://github.com/Janiru-Sudasinghe/Network-Scanner-Project)
 > All group members have maintained an active commit history to reflect individual contributions throughout the development lifecycle.
 
 ---
@@ -221,7 +221,7 @@ Built a professional command-line interface using `argparse`. Users can specify 
 ### Phase 5 — Version Control & Collaboration
 The project was managed through a GitHub repository named **Network-Scanner-Project**. All group members contributed via individual commits, ensuring a traceable and verifiable development history. The repository includes full documentation and setup instructions.
 
-- 🔗 **Repository:** [https://github.com/Janiru-Sudasinghe/Network-Scanner-Project]
+- 🔗 **Repository:** [https://github.com/your-group/Network-Scanner-Project](https://github.com/Janiru-Sudasinghe/Network-Scanner-Project)
 
 ---
 
