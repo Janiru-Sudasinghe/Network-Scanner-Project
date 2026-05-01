@@ -272,7 +272,7 @@ Built a professional command-line interface using `argparse`. Users can specify 
 ### Phase 5 — Version Control & Collaboration
 The project was managed through a GitHub repository named **Network-Scanner-Project**. All group members contributed via individual commits, ensuring a traceable and verifiable development history. The repository includes full documentation and setup instructions.
 
-- 🔗 **Repository:** [https://github.com/your-group/Network-Scanner-Project](https://github.com/Janiru-Sudasinghe/Network-Scanner-Project)
+- 🔗 **Repository:** [Network-Scanner-Project](https://github.com/Janiru-Sudasinghe/Network-Scanner-Project)
 
 ---
 
