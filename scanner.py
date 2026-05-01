@@ -1,34 +1,31 @@
 import socket
 
-# 1. Define our target (your VM) and the port we want to check
+# 1. Define our target and a list of common ports to check
 TARGET_IP = "192.168.120.131"
-PORT = 22  # Port 22 is for SSH, which we know is open on Metasploitable
+PORTS_TO_SCAN = [21, 22, 23, 80, 139, 443, 445, 3306, 8080]
 
 def scan_port(ip, port):
-    print(f"Attempting to scan {ip} on port {port}...")
-    
-    # 2. Create the socket (Think of this as creating our delivery van)
-    # AF_INET means we are using IPv4, SOCK_STREAM means we are using TCP
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
-    # 3. SET THE TIMEOUT! This is a strict requirement for your assignment.
-    # If the port ignores us for 1 second, we move on instead of freezing.
     s.settimeout(1.0) 
     
     try:
-        # 4. Try to connect. connect_ex() returns a '0' if the door is open.
         result = s.connect_ex((ip, port))
         
+        # We only print the open ports so our terminal doesn't get cluttered
         if result == 0:
             print(f"[+] SUCCESS: Port {port} is OPEN!")
-        else:
-            print(f"[-] CLOSED: Port {port} is closed.")
             
-    except socket.error as e:
-        print(f"Network error occurred: {e}")
+    except socket.error:
+        pass # If there is an error, just ignore it and move on
     finally:
-        # 5. Always clean up and close the socket when done
         s.close()
 
-# Run the function we just built
-scan_port(TARGET_IP, PORT)
+print(f"Starting scan on target: {TARGET_IP}")
+print("-" * 40) # Prints a nice dividing line
+
+# 2. The Loop: Send the delivery van to every port in our list
+for port in PORTS_TO_SCAN:
+    scan_port(TARGET_IP, port)
+
+print("-" * 40)
+print("Scan complete!")
