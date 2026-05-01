@@ -1,10 +1,10 @@
 # Network Scanner Project - Group 08
 
 ## Group Member 
-Index No - COHNDNE251F-035
-Index No - COHNDNE251F-038
-Index No - COHNDNE251F-043
-Index No - COHNDNE251F-045
+* Index No - COHNDNE251F-035
+* Index No - COHNDNE251F-038
+* Index No - COHNDNE251F-043
+* Index No - COHNDNE251F-045
 
 ## Scenario
 This tool was developed for internal auditing as a high-performance Network Scanner. It is designed to be faster than basic scripts, handle network errors gracefully, and provide a professional command-line experience.
