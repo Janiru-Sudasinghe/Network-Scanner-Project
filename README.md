@@ -1,37 +1,252 @@
-# Network Scanner Project - Group 08
+# 🔍 Network Discovery & Auditing Tool
 
-## Group Member 
-* Index No - COHNDNE251F-035
-* Index No - COHNDNE251F-038
-* Index No - COHNDNE251F-043
-* Index No - COHNDNE251F-045
+> A high-performance, multi-threaded Python network scanner built for internal auditing. Developed as part of the Python Programming – Network Programming Design coursework.
 
-## Scenario
-This tool was developed for internal auditing as a high-performance Network Scanner. It is designed to be faster than basic scripts, handle network errors gracefully, and provide a professional command-line experience.
+![Python](https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+![Threading](https://img.shields.io/badge/Threading-concurrent.futures-orange?style=flat-square)
+![CLI](https://img.shields.io/badge/CLI-argparse-purple?style=flat-square)
 
-## Features
-* **Core Networking:** Utilizes the `socket` module with customized timeouts to prevent hanging on filtered ports.
-* **Subnet Parsing:** Integrates the `ipaddress` module to support single IP targeting or full CIDR block scanning (e.g., 192.168.1.0/24).
-* **High Performance:** Uses `concurrent.futures.ThreadPoolExecutor` for multi-threaded scanning, drastically reducing scan times.
-* **CLI Interface:** Built with `argparse` for a flexible, user-friendly terminal experience.
+---
 
-## Setup Instructions
-1. Ensure Python 3.x is installed on your system.
-2. No external libraries are required (only Python standard libraries are used).
-3. Clone or download this repository.
+## 📋 Table of Contents
 
-## Usage Examples
+- [Project Overview](#project-overview)
+- [Group Members](#group-members)
+- [Technical Architecture](#technical-architecture)
+- [Key Features](#key-features)
+- [Requirements](#requirements)
+- [Installation & Setup](#installation--setup)
+- [Usage](#usage)
+- [CLI Reference](#cli-reference)
+- [Development Phases](#development-phases)
+- [Project Structure](#project-structure)
+- [Acknowledgements](#acknowledgements)
 
-**Basic Scan (Default Ports):**
-`python scanner.py -t 192.168.1.1`
+---
 
-**Scan a Subnet for Specific Ports:**
-`python scanner.py -t 192.168.1.0/24 -p 22,80,443`
+## Project Overview
 
-**High-Speed Scan (Custom Thread Count & Port Range):**
-`python scanner.py -t 192.168.1.1 -p 1-1000 -w 100`
+**Scenario:** As part of a simulated Junior Security Engineer role at a cybersecurity firm, this tool was developed to fulfil the requirement for a professional-grade network scanner capable of conducting internal audits across enterprise subnets.
 
-## Arguments
-* `-t` / `--target` : (Required) Target IP or CIDR block.
-* `-p` / `--ports`  : (Optional) Comma-separated ports or ranges (default: 21,22,23,80,139,443,445,3306,8080).
-* `-w` / `--workers`: (Optional) Number of concurrent threads (default: 50).
+The scanner is engineered to outperform basic scripting solutions by leveraging concurrent multi-threading, robust error handling, and a structured command-line interface. It identifies open TCP ports across single hosts or full CIDR blocks, making it suitable for both targeted and broad-spectrum auditing tasks.
+
+This project demonstrates mastery of **Socket Programming**, **Concurrency**, and **Input Parsing** as outlined in the assignment brief.
+
+---
+
+## Group Members
+
+| Index Number       | Contribution |
+|--------------------|--------------|
+| COHNDNE251F-035    | Core Networking & Socket Implementation |
+| COHNDNE251F-038    | Subnet Parsing & IP Address Module Integration |
+| COHNDNE251F-043    | Multi-threading Architecture & Performance Optimisation |
+| COHNDNE251F-045    | CLI Interface, Argument Parsing & Documentation |
+
+> **Repository:** [Network-Scanner-Project](https://github.com/) *(replace with actual link)*
+> All group members have maintained an active commit history to reflect individual contributions throughout the development lifecycle.
+
+---
+
+## Technical Architecture
+
+The tool is structured around four core development phases, each building upon the last to deliver a production-quality scanning solution:
+
+```
+User Input (argparse)
+       │
+       ▼
+  IP / CIDR Parsing (ipaddress module)
+       │
+       ▼
+ ThreadPoolExecutor (concurrent.futures)
+   ┌───┴───────────────────┐
+   │   Thread 1            │  Thread N
+   │   socket.connect()    │  socket.connect()
+   │   → Port Result       │  → Port Result
+   └───────────────────────┘
+       │
+       ▼
+  Aggregated Results → Terminal Output
+```
+
+---
+
+## Key Features
+
+| Feature | Description | Module Used |
+|---|---|---|
+| **Core Networking** | Attempts TCP connections with configurable timeouts to prevent hanging on filtered ports | `socket` |
+| **Subnet Parsing** | Supports scanning of a single IP or a full CIDR block (e.g., `192.168.1.0/24`) | `ipaddress` |
+| **High Performance** | Multi-threaded architecture reduces scan time dramatically over sequential approaches | `concurrent.futures.ThreadPoolExecutor` |
+| **CLI Interface** | Flexible terminal interface supporting target, port range, and thread count configuration | `argparse` |
+| **Error Handling** | Gracefully manages unreachable hosts, refused connections, and network timeouts | `socket`, `try/except` |
+
+---
+
+## Requirements
+
+- **Python 3.x** (no version below 3.4 supported due to `ipaddress` and `concurrent.futures`)
+- **No external dependencies** — the tool is built entirely on the Python Standard Library
+
+```
+socket
+ipaddress
+concurrent.futures
+argparse
+```
+
+---
+
+## Installation & Setup
+
+**Step 1 — Clone the repository**
+
+```bash
+git clone https://github.com/your-group/Network-Scanner-Project.git
+cd Network-Scanner-Project
+```
+
+**Step 2 — Verify Python version**
+
+```bash
+python --version
+# Expected: Python 3.x
+```
+
+**Step 3 — Confirm no external packages are needed**
+
+```bash
+# No pip install required. All modules are from the Python Standard Library.
+```
+
+---
+
+## Usage
+
+### Basic Scan — Single Host (Default Ports)
+
+Scans a single IP address using the default set of commonly audited ports.
+
+```bash
+python scanner.py -t 192.168.1.1
+```
+
+**Default ports scanned:** `21, 22, 23, 80, 139, 443, 445, 3306, 8080`
+
+---
+
+### Subnet Scan — CIDR Block with Specific Ports
+
+Scans all hosts in a `/24` subnet for specified ports, useful for broad internal audits.
+
+```bash
+python scanner.py -t 192.168.1.0/24 -p 22,80,443
+```
+
+---
+
+### Port Range Scan — Custom Range with Increased Thread Count
+
+Scans a range of ports on a single host using 100 concurrent threads for maximum throughput.
+
+```bash
+python scanner.py -t 192.168.1.1 -p 1-1000 -w 100
+```
+
+---
+
+### Sample Output
+
+```
+[*] Starting scan on: 192.168.1.1
+[*] Ports to scan: [22, 80, 443]
+[*] Using 50 threads
+
+[+] 192.168.1.1:22   OPEN
+[+] 192.168.1.1:80   OPEN
+[-] 192.168.1.1:443  CLOSED
+
+[*] Scan complete. 2 open port(s) found.
+[*] Time elapsed: 0.84 seconds
+```
+
+---
+
+## CLI Reference
+
+| Argument | Long Form | Type | Required | Default | Description |
+|---|---|---|---|---|---|
+| `-t` | `--target` | `str` | ✅ Yes | — | Target IP address or CIDR subnet block |
+| `-p` | `--ports` | `str` | ❌ No | `21,22,23,80,139,443,445,3306,8080` | Comma-separated ports or a range (e.g., `1-1024`) |
+| `-w` | `--workers` | `int` | ❌ No | `50` | Number of concurrent threads to use during scan |
+
+**Full help output:**
+
+```bash
+python scanner.py --help
+```
+
+```
+usage: scanner.py [-h] -t TARGET [-p PORTS] [-w WORKERS]
+
+Network Discovery & Auditing Tool | Group 08
+
+options:
+  -h, --help            show this help message and exit
+  -t, --target TARGET   Target IP or CIDR block (e.g., 192.168.1.1 or 192.168.1.0/24)
+  -p, --ports PORTS     Ports to scan: comma-separated or range (default: common ports)
+  -w, --workers WORKERS Number of threads (default: 50)
+```
+
+---
+
+## Development Phases
+
+This project was developed across five structured phases as specified in the assignment brief:
+
+### Phase 1 — Core Networking
+Implemented TCP connection attempts using the `socket` module. Each connection is subject to a configurable timeout to ensure the scanner does not hang indefinitely on filtered or unresponsive ports.
+
+### Phase 2 — Subnet Parsing
+Integrated the `ipaddress` module to allow the tool to accept both single IP addresses and CIDR notation. All host addresses within a given block are enumerated and scanned systematically.
+
+### Phase 3 — High-Performance Multi-threading
+Replaced the initial synchronous scan loop with a `concurrent.futures.ThreadPoolExecutor`. This enables hundreds of port checks to occur simultaneously, reducing scan times by orders of magnitude compared to sequential execution.
+
+### Phase 4 — CLI Interface
+Built a professional command-line interface using `argparse`. Users can specify all scan parameters directly at the terminal without modifying source code, supporting flexible and repeatable audit workflows.
+
+### Phase 5 — Version Control & Collaboration
+The project was managed through a GitHub repository named **Network-Scanner-Project**. All group members contributed via individual commits, ensuring a traceable and verifiable development history. The repository includes full documentation and setup instructions.
+
+- 🔗 **Repository:** [https://github.com/Janiru-Sudasinghe/Network-Scanner-Project]
+
+---
+
+## Project Structure
+
+```
+Network-Scanner-Project/
+│
+├── scanner.py          # Main source file — all scanning logic
+├── README.md           # Project documentation (this file)
+└── requirements.txt    # Dependency declaration (standard library only)
+```
+
+---
+
+## Ethical & Legal Disclaimer
+
+> ⚠️ **This tool is intended for authorised use only.**
+> Scanning networks or systems without explicit permission is illegal and unethical. This tool was developed solely for academic purposes within a controlled lab environment. The authors and contributors accept no liability for misuse.
+
+---
+
+## Acknowledgements
+
+- Developed as a submission for **Python Programming – Network Programming Design**
+- Course Institution: *National Institute of Business Management (NIBM)*
+- Submitted by: **Group 08**
+- Due: Sunday, 3 May 2026
