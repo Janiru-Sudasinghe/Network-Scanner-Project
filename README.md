@@ -104,7 +104,7 @@ argparse
 **Step 1 — Clone the repository**
 
 ```bash
-git clone https://github.com/your-group/Network-Scanner-Project.git
+git clone https://github.com/Janiru-Sudasinghe/Network-Scanner-Project
 cd Network-Scanner-Project
 ```
 
@@ -130,7 +130,7 @@ python --version
 Scans a single IP address using the default set of commonly audited ports.
 
 ```bash
-python scanner.py -t 192.168.1.1
+py scanner.py -t 192.168.120.131
 ```
 
 **Default ports scanned:** `21, 22, 23, 80, 139, 443, 445, 3306, 8080`
@@ -142,7 +142,7 @@ python scanner.py -t 192.168.1.1
 Scans all hosts in a `/24` subnet for specified ports, useful for broad internal audits.
 
 ```bash
-python scanner.py -t 192.168.1.0/24 -p 22,80,443
+py scanner.py -t 192.168.120.0/24 -p 22,80,443
 ```
 
 ---
@@ -152,24 +152,65 @@ python scanner.py -t 192.168.1.0/24 -p 22,80,443
 Scans a range of ports on a single host using 100 concurrent threads for maximum throughput.
 
 ```bash
-python scanner.py -t 192.168.1.1 -p 1-1000 -w 100
+py scanner.py -t 192.168.120.131 -p 1-1000 -w 100
+```
+
+---
+
+### Mixed Format — Individual Ports and Range
+
+Combines individual port declarations with a hyphenated range.
+
+```bash
+py scanner.py -t 192.168.120.131 -p 21,22,80,8000-8010 -w 75
+```
+
+---
+
+### Error Case — Malformed Target
+
+Tests error handling by providing an invalid IP address (gracefully prints a clean error without crashing).
+
+```bash
+python scanner.py -t not-an-ip -p 80
 ```
 
 ---
 
 ### Sample Output
 
+```bash
+py scanner.py -t 192.168.120.131 -p 1-1000 -w 100
 ```
-[*] Starting scan on: 192.168.1.1
-[*] Ports to scan: [22, 80, 443]
-[*] Using 50 threads
 
-[+] 192.168.1.1:22   OPEN
-[+] 192.168.1.1:80   OPEN
-[-] 192.168.1.1:443  CLOSED
+```
+========================================================
+     Network Discovery & Auditing Tool — Group 08
+========================================================
+  Target  : 192.168.120.131
+  Ports   : 1000 port(s) queued
+  Threads : 100 concurrent workers
+========================================================
 
-[*] Scan complete. 2 open port(s) found.
-[*] Time elapsed: 0.84 seconds
+  [OPEN]  192.168.120.131    Port 53     (DNS)
+  [OPEN]  192.168.120.131    Port 23     (Telnet)
+  [OPEN]  192.168.120.131    Port 25     (SMTP)
+  [OPEN]  192.168.120.131    Port 80     (HTTP)
+  [OPEN]  192.168.120.131    Port 22     (SSH)
+  [OPEN]  192.168.120.131    Port 21     (FTP)
+  [OPEN]  192.168.120.131    Port 139    (NetBIOS)
+  [OPEN]  192.168.120.131    Port 111    
+  [OPEN]  192.168.120.131    Port 445    (SMB)
+  [OPEN]  192.168.120.131    Port 513    
+  [OPEN]  192.168.120.131    Port 512    
+  [OPEN]  192.168.120.131    Port 514    
+
+========================================================
+  Scan complete.
+  Open ports found : 12
+  Total checks     : 1000
+  Time elapsed     : 10.16 seconds
+========================================================
 ```
 
 ---
@@ -185,19 +226,29 @@ python scanner.py -t 192.168.1.1 -p 1-1000 -w 100
 **Full help output:**
 
 ```bash
-python scanner.py --help
+py scanner.py --help
 ```
 
 ```
 usage: scanner.py [-h] -t TARGET [-p PORTS] [-w WORKERS]
 
-Network Discovery & Auditing Tool | Group 08
+Network Discovery & Auditing Tool — Group 08
+Performs multi-threaded TCP port scanning across single hosts or CIDR subnets.
 
 options:
   -h, --help            show this help message and exit
-  -t, --target TARGET   Target IP or CIDR block (e.g., 192.168.1.1 or 192.168.1.0/24)
-  -p, --ports PORTS     Ports to scan: comma-separated or range (default: common ports)
-  -w, --workers WORKERS Number of threads (default: 50)
+  -t, --target TARGET   Target IPv4 address or CIDR block (e.g., 192.168.1.1 or 192.168.1.0/24)
+  -p, --ports PORTS     Ports to scan. Accepts comma-separated values or ranges (default: 21,22,23,80,139,443,445,3306,8080)
+  -w, --workers WORKERS
+                        Number of concurrent threads (default: 50)
+
+Examples:
+  python scanner.py -t 192.168.1.1
+  python scanner.py -t 192.168.1.0/24 -p 22,80,443
+  python scanner.py -t 192.168.1.1 -p 1-1000 -w 100
+
+Disclaimer:
+  Use only on networks for which you have explicit authorisation.
 ```
 
 ---
